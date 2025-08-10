@@ -2,30 +2,29 @@ class Solution {
 public:
     vector<string> restoreIpAddresses(string s) {
         vector<string> ans;
-        backtrack(s,0,"",0,ans);
-        return ans;
+         backtracking(0,"",0,ans,s);
+         return ans;
     }
-    void backtrack(const string&s,int index,string current,int dots,vector<string> &ans){
-          if(dots==4 && index==s.size()){
+    void  backtracking(int start,string current,int dots,vector<string>& ans,string s){
+         if(dots==4 && start==s.size()){
              ans.push_back(current);
              return;
-          }
-          if(dots>4 || index>s.size()) return;
-
-          for(int len=1;len<=3;len++){
-            string part=s.substr(index,len);
-             if(isValid(part)){
-                string res=dots==0?part:current+"."+part;
-                backtrack(s,index+len,res,dots+1,ans);
-             }
-          }
-
-    }
-    bool isValid(string str){
-         if(str.empty() || (str.size()>1 && str[0]=='0')){
-            return false;
          }
-         int res=stoi(str);
-         return (res>=0 && res<=255);
+         if(dots>=4 || start>=s.size()){
+            return;
+         }
+         for(int len=1;len<=3;len++){
+            string part=s.substr(start,len);
+            if(isValid(part)){
+             string next=(current.size()==0)?part:current+"."+part;
+              backtracking(start+len,next,dots+1,ans,s);
+            }
+         }
     }
+   bool isValid(string part) {
+    if (part.size() > 3) return false;
+    if (part.size() > 1 && part[0] == '0') return false; 
+    int p = stoi(part);
+    return p >= 0 && p <= 255;
+}
 };
