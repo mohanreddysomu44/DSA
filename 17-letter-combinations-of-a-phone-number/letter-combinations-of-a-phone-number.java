@@ -7,26 +7,18 @@ class Solution {
         if (digits == null || digits.length() == 0) return out;
 
         String[] lett = {
-            "",     // 0
-            "",     // 1
-            "abc",  // 2
-            "def",  // 3
-            "ghi",  // 4
-            "jkl",  // 5
-            "mno",  // 6
-            "pqrs", // 7
-            "tuv",  // 8
-            "wxyz"  // 9
+            "", "", "abc", "def", "ghi", "jkl",
+            "mno", "pqrs", "tuv", "wxyz"
         };
 
-        solve(digits, 0, "", lett);
+        StringBuilder sb = new StringBuilder();
+        solve(digits, 0, sb, lett);
         return out;
     }
 
-    void solve(String digits, int ind, String ans, String[] lett) {
-        // Base case: if we've processed all digits
-        if (ind >= digits.length()) {
-            out.add(ans);
+    void solve(String digits, int ind, StringBuilder sb, String[] lett) {
+        if (ind == digits.length()) {
+            out.add(sb.toString());
             return;
         }
 
@@ -34,8 +26,12 @@ class Solution {
         String letter = lett[num];
 
         for (int i = 0; i < letter.length(); i++) {
-            // Recurse with current character appended
-            solve(digits, ind + 1, ans + letter.charAt(i), lett);
+      
+            sb.append(letter.charAt(i));
+
+            solve(digits, ind + 1, sb, lett);
+
+            sb.deleteCharAt(sb.length() - 1);
         }
     }
 }
